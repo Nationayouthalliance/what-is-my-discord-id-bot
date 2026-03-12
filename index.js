@@ -54,13 +54,25 @@ client.on(Events.InteractionCreate, async interaction => {
         }
 
         if (interaction.commandName === 'idinfo') {
-            const ids = interaction.options.getString('ids').split(/\s+/);
-            let response = '';
-            for (const id of ids) {
-                response += `<@${id}> → https://discord.com/users/${id}\n`;
+    const ids = interaction.options.getString('ids').split(/\s+/);
+    let response = '';
+
+    for (const id of ids) {
+        try {
+            // Try to fetch member from the guild
+            const member = await interaction.guild.members.fetch(id);
+            if (member) {
+                response += `<@${id}>\n`; // tag user if present
             }
-            await interaction.reply(response);
+        } catch (err) {
+            // If fetch fails, user not in server
+            response += `User ${id} not present in server, maybe user left or community managers removed/banned the user\n`;
         }
+    }
+
+    await interaction.reply(response);
+}
+
     }
 });
 
