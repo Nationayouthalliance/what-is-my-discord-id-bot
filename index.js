@@ -92,6 +92,19 @@ client.on('ready', async () => {
     channel.send({ content: 'Click below to get your ID:', components: [row] });
 });
 
+client.on('ready', () => {
+    console.log(`Bot connected as ${client.user.tag}`);
+});
+
+client.on('debug', console.log);
+client.on('warn', console.warn);
+client.on('error', console.error);
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection:', reason);
+});
+
+
 client.login(process.env.TOKEN);
 
 // Error handling to prevent silent crashes
