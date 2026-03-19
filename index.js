@@ -115,3 +115,20 @@ process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
 });
 
+// Extra logging to see connection status
+client.on('ready', () => {
+    console.log(`Bot connected as ${client.user.tag}`);
+});
+
+client.on('shardDisconnect', (event, shardId) => {
+    console.error(`Shard ${shardId} disconnected:`, event);
+});
+
+client.on('shardReconnecting', (shardId) => {
+    console.log(`Shard ${shardId} reconnecting...`);
+});
+
+client.on('shardResume', (shardId, replayedEvents) => {
+    console.log(`Shard ${shardId} resumed, replayed ${replayedEvents} events.`);
+});
+
