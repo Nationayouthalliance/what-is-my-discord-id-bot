@@ -93,3 +93,25 @@ client.on('ready', async () => {
 });
 
 client.login(process.env.TOKEN);
+
+// Error handling to prevent silent crashes
+client.on('error', (err) => {
+    console.error('Client error:', err);
+});
+
+client.on('shardError', (err, shardId) => {
+    console.error(`Shard ${shardId} error:`, err);
+});
+
+client.on('disconnect', (event) => {
+    console.error('Client disconnected:', event);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
